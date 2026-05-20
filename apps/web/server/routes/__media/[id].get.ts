@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   setResponseHeader(event, 'Content-Type', file.mimeType)
   setResponseHeader(event, 'Cache-Control', 'no-store, no-cache')
-  setResponseHeader(event, 'Content-Length', file.data.length.toString())
+  setResponseHeader(event, 'Content-Length', file.data.length)
 
   return file.data
 })
