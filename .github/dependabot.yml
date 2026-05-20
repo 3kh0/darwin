@@ -1,0 +1,39 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+
+  - package-ecosystem: npm
+    directory: /apps/web
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+    groups:
+      nuxt:
+        patterns:
+          - nuxt
+          - '@nuxt/*'
+      vue:
+        patterns:
+          - vue
+          - vue-router
+          - '@vue/*'
+      testing:
+        patterns:
+          - vitest
+          - '@vitest/*'
+          - happy-dom
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels:
+      - dependencies
+      - github-actions

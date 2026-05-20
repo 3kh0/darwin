@@ -9,6 +9,7 @@
     "dev:services": "docker compose -f docker-compose.dev.yml up -d",
     "dev:down": "docker compose -f docker-compose.dev.yml down",
     "build": "pnpm --filter @darwin/web build",
-    "preview": "pnpm --filter @darwin/web preview"
+    "preview": "pnpm --filter @darwin/web preview",
+    "test": "pnpm --filter @darwin/web test"
   }
 }
