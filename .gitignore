@@ -23,5 +23,5 @@ logs/
 # Temp data (mounted as Docker volume)
 .data/
 
-# esmBot source (cloned by setup script — run pnpm setup)
+# esmBot source (cloned by setup script — run bun run setup)
 services/esmbot-media/

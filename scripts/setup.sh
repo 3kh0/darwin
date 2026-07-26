@@ -32,6 +32,6 @@ if [ ! -e "apps/web/.env" ]; then
 fi
 
 echo "Installing dependencies..."
-pnpm install
+bun install
 
 echo "Setup done, consult the README for next steps."

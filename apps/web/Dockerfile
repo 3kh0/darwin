@@ -1,22 +1,18 @@
-FROM node:alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM oven/bun:1.3.14-alpine AS base
 
 FROM base AS deps
 WORKDIR /workspace
 
-COPY package.json pnpm-workspace.yaml ./
-COPY pnpm-lock.yaml ./
+COPY package.json bun.lock ./
 COPY apps/web/package.json ./apps/web/package.json
 
-RUN --mount=type=cache,id=pnpm-web,target=/pnpm/store \
-    pnpm install --frozen-lockfile --filter @darwin/web...
+RUN --mount=type=cache,id=bun-web,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --filter @darwin/web
 
 FROM deps AS builder
 COPY apps/web ./apps/web
 WORKDIR /workspace/apps/web
-RUN pnpm build
+RUN bun run build
 
 FROM node:alpine AS runner
 WORKDIR /app
