@@ -1,71 +1,40 @@
 // @vitest-environment nuxt
 import { describe, it, expect } from 'vitest'
-import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
 import IndexPage from '../../app/pages/index.vue'
 
-mockNuxtImport('useFetch', () => () => ({
-  data: { value: { effects: ['blur', 'caption', 'flip'] } },
-  pending: { value: false },
-  error: { value: null },
-}))
-
 describe('index page', () => {
-  it('renders the darwin heading', async () => {
+  it('centers the experience on one drag-and-drop target', async () => {
     const wrapper = await mountSuspended(IndexPage)
-    expect(wrapper.find('h1').text()).toBe('darwin')
+    expect(wrapper.find('h1').text()).toBe('Drop an image.')
+    expect(wrapper.find('.drop').exists()).toBe(true)
+    expect(wrapper.find('input[type="url"]').exists()).toBe(false)
   })
 
-  it('links to the effects API', async () => {
+  it('accepts every supported image input format', async () => {
     const wrapper = await mountSuspended(IndexPage)
-    expect(wrapper.find('a[href="/api/effects"]').exists()).toBe(true)
+    expect(wrapper.find('input[type="file"]').attributes('accept')).toBe(
+      'image/png,image/jpeg,image/webp,image/gif,image/avif',
+    )
   })
 
-  it('renders a file input accepting images', async () => {
+  it('includes the font and template effects', async () => {
     const wrapper = await mountSuspended(IndexPage)
-    const input = wrapper.find('input[type="file"]')
-    expect(input.exists()).toBe(true)
-    expect(input.attributes('accept')).toBe('image/*')
+    const labels = wrapper.findAll('select option').map(option => option.text())
+    expect(labels).toContain('Caption')
+    expect(labels).toContain('Uncanny')
+    expect(labels).toContain('GameXplain')
+    expect(labels).toContain('Shutterstock watermark')
   })
 
-  it('renders a URL input', async () => {
+  it('shows simple fields for effects that need text', async () => {
     const wrapper = await mountSuspended(IndexPage)
-    expect(wrapper.find('input[type="url"]').exists()).toBe(true)
+    await wrapper.find('select').setValue('meme')
+    expect(wrapper.findAll('input[type="text"]')).toHaveLength(2)
   })
 
-  it('renders a params textarea', async () => {
+  it('requires an image before processing', async () => {
     const wrapper = await mountSuspended(IndexPage)
-    expect(wrapper.find('textarea').exists()).toBe(true)
-  })
-
-  it('renders the effects select with mocked options', async () => {
-    const wrapper = await mountSuspended(IndexPage)
-    const labels = wrapper.findAll('select option').map(o => o.text())
-    expect(labels).toContain('blur')
-    expect(labels).toContain('caption')
-    expect(labels).toContain('flip')
-  })
-
-  it('pre-selects the first effect', async () => {
-    const wrapper = await mountSuspended(IndexPage)
-    const select = wrapper.find('select').element as HTMLSelectElement
-    expect(select.value).toBe('blur')
-  })
-
-  it('renders the Apply button in an enabled state', async () => {
-    const wrapper = await mountSuspended(IndexPage)
-    const btn = wrapper.find('button')
-    expect(btn.text()).toBe('Apply')
-    expect(btn.attributes('disabled')).toBeUndefined()
-  })
-
-  it('shows "No output yet." before any submission', async () => {
-    const wrapper = await mountSuspended(IndexPage)
-    expect(wrapper.text()).toContain('No output yet.')
-  })
-
-  it('shows an error when Apply is clicked without a file or URL', async () => {
-    const wrapper = await mountSuspended(IndexPage)
-    await wrapper.find('button').trigger('click')
-    expect(wrapper.text()).toContain('Provide a file or URL.')
+    expect(wrapper.find('button').attributes('disabled')).toBeDefined()
   })
 })

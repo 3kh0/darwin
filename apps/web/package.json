@@ -4,22 +4,26 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare:wasm": "node scripts/copy-wasm.mjs",
+    "predev": "bun run prepare:wasm",
+    "prebuild": "bun run prepare:wasm",
+    "pregenerate": "bun run prepare:wasm",
+    "postgenerate": "node scripts/finalize-static.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && node scripts/copy-wasm.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "nuxt": "^4",
-    "ws": "^8.20.1"
+    "wasm-vips": "^0.0.18"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3",
     "@types/node": "25.9.1",
-    "@types/ws": "^8.18.1",
     "@vue/test-utils": "^2",
     "happy-dom": "^18",
     "typescript": "^6",

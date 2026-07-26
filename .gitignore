@@ -5,7 +5,8 @@ node_modules/
 # Build outputs
 apps/web/.nuxt/
 apps/web/.output/
-apps/web/dist/
+apps/web/dist
+apps/web/public/wasm-vips/
 
 # Environment
 .env
@@ -19,9 +20,6 @@ Thumbs.db
 # Logs
 *.log
 logs/
-
-# Temp data (mounted as Docker volume)
-.data/
 
 # esmBot source (cloned by setup script — run bun run setup)
 services/esmbot-media/

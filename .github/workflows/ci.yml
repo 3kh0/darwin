@@ -22,10 +22,6 @@ jobs:
 
       - name: Run tests
         run: bun run --filter @darwin/web test --run
-        env:
-          MEDIA_SECRET: ci-test-secret-key-abcdefgh
-          APP_PUBLIC_URL: http://localhost:3000
-          API_KEYS: ''
 
   typecheck:
     name: Type check

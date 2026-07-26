@@ -1,21 +1,38 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-19',
-
-  runtimeConfig: {
-    esmbotWsUrl: process.env.ESMBOT_WS_URL || 'ws://localhost:3762/sock',
-    esmbotHttpUrl: process.env.ESMBOT_HTTP_URL || 'http://localhost:3762',
-    esmbotPass: process.env.ESMBOT_PASS || '',
-    appPublicUrl: process.env.APP_PUBLIC_URL || 'http://localhost:3000',
-    apiKeys: process.env.API_KEYS || '',
-    mediaSecret: process.env.MEDIA_SECRET || 'dev-media-secret-change-in-prod',
-  },
+  ssr: false,
 
   router: {
     options: { strict: false },
   },
 
-  nitro: {
-    storage: { data: { driver: 'fs', base: './.data' } },
-    rollupConfig: { external: ['bufferutil', 'utf-8-validate'] },
+  app: {
+    head: {
+      title: 'darwin — offline image effects',
+      meta: [
+        { name: 'description', content: 'Private, offline image effects powered by WebAssembly.' },
+        { name: 'theme-color', content: '#111827' },
+      ],
+      link: [{ rel: 'manifest', href: '/manifest.webmanifest' }],
+    },
+  },
+
+  routeRules: {
+    '/**': {
+      headers: {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+      },
+    },
+  },
+
+  vite: {
+    optimizeDeps: { include: ['wasm-vips'] },
+    server: {
+      headers: {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+      },
+    },
   },
 })
