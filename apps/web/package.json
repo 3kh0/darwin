@@ -22,7 +22,7 @@
     "wasm-vips": "^0.0.18"
   },
   "devDependencies": {
-    "@nuxt/test-utils": "^3",
+    "@nuxt/test-utils": "^4",
     "@types/node": "25.9.1",
     "@vue/test-utils": "^2",
     "happy-dom": "^18",
