@@ -27,7 +27,7 @@
     "@vue/test-utils": "^2",
     "happy-dom": "^18",
     "typescript": "^6",
-    "vitest": "^3",
+    "vitest": "^4",
     "vue": "^3.5.34",
     "vue-router": "^4"
   }
